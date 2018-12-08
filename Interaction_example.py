@@ -1,10 +1,46 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed May  9 08:46:49 2018
+Created on Dec 7 08:46:49 2018
 
 @author: daiwei.lin
+
+
+Diagram of structure:
+
+
+
+
+        ------------------------------------------------------------------
+        |                                              ML_LAS_Interface  |
+        |    ------------------------------------                        |
+        |    |         Env_Example              |                        |
+        |    ------------------------------------                        |
+        ------------------------------------------------------------------
+              /\                   |
+              | action,flag        |  observation
+              |                    |
+        ------|--------------------|-------------------------------------
+        |     |                    |                  LASBaselineAgent   |
+        |     |                    |                                     |
+        |     |                    |                                     |
+        |     |                    |                                     |
+        |     |                   \/                                     |
+        |  -------------------------------                               |
+        |  |    Internal Environment     |                               |
+        |  -------------------------------                               |
+        |   /\                     |  Flt observation, reward, flag      |
+        |   |  action             \/                                     |
+        |  ---------------------------                                   |
+        |  |      Baseline agent     |                                   |
+        |  ---------------------------                                   |
+        |                                                                |
+        ------------------------------------------------------------------
+
+
+
 """
+
 
 
 from Environment.LASROMEnv import LASROMEnv
@@ -14,7 +50,6 @@ from gym import spaces
 
 import logging
 
-# from Learning import Learning
 
 class Env_Example():
     """
@@ -42,15 +77,17 @@ class Env_Example():
         Reset environment and return an observation.
         Here returned observation is a random sample in the observation space
         """
-
         return self.observation_space.sample()
 
     def step(self, action):
         """
-        Take one time step using given action.
+        Take one step using given action.
+
         Return observation, done, info
+        Done isn't used.(set to False)
+        info isn't used here. (set to '')
         """
-        return self.observation_space.sample(), 0, True, ''
+        return self.observation_space.sample(), False, ''
 
 
 class ML_LAS_Interface():
@@ -71,7 +108,7 @@ class ML_LAS_Interface():
     def take_action(self, action):
         self.action = action
         # print("action :", action)
-        observation, reward, done, info = self.env.step(action)
+        observation, done, info = self.env.step(action)
         self.observation = observation
 
 

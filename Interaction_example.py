@@ -80,12 +80,14 @@ if __name__ == '__main__':
     # initialization #
     #================#
     logger = logging.getLogger(__name__)
-    # ROMenv = LASROMEnv(IP='127.0.0.1',
-    #                    Port=19997,
-    #                    reward_function_type='ir')
-    env = Env_Example(action_dimension=5, sensors_dimension=10)
+    # V-REP simulator
+    ROMenv = LASROMEnv(IP='127.0.0.1',
+                       Port=19997,
+                       reward_function_type='ir')
+    # Example environment
+    # env = Env_Example(action_dimension=5, sensors_dimension=10)
     print("env Initialized")
-    interface = ML_LAS_Interface(env)
+    interface = ML_LAS_Interface(ROMenv)
     print("interface Initialized")
 
     # Constants
@@ -98,7 +100,7 @@ if __name__ == '__main__':
                              interface.env.action_space.shape[0],
                              num_observation=x_order_sensor_reading,
                              load_pretrained_agent_flag=load_pretrained_agent_flag)
-    print(agent.observation_space.shape)
+    print("Agent's observation dimension = {}".format(agent.baseline_agent.observation_space.shape[0]))
 
     #===========#
     # Main loop #
@@ -107,13 +109,15 @@ if __name__ == '__main__':
     interface.reset()
     for _ in range(1000):
         observation = interface.get_observation()
-        print(observation)
+        # print(observation)
         take_action_flag, action = agent.feed_observation(observation)
         if take_action_flag == True:
                 interface.take_action(action)
+
+    print("Training complete")
     # Save learned model
-    logger.info('{}: Interaction is done. Saving learned models...'.format(agent.name))
-    agent.stop()
-    logger.info('{}: Saving learned models done.'.format(agent.name))
+    # logger.info('{}: Interaction is done. Saving learned models...'.format(agent.name))
+    # agent.stop()
+    # logger.info('{}: Saving learned models done.'.format(agent.name))
 
 

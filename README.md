@@ -38,5 +38,5 @@ A package for people in the studio to perform tests involve RL agents
     
     Ignore installing Mujoco if required. The Mujoco library is not used in this project.
 * MPI
-  For Windows, please install [Microsoft MPI](https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi) in order for logger to work.
+     For Windows, please install [Microsoft MPI](https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi) in order for logger to work.
 * Tensorflow https://www.tensorflow.org/install/
